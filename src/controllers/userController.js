@@ -1,13 +1,14 @@
-const { findUserByEmail } = require('../repositories/userRepository')
-const userService = require('../services/userService')
-const createUser = async (req, res) => {
+import { getUserByEmail } from '../repositories/userRepository';
+import * as userService from '../services/userService';
+
+export const createUser = async (req, res) => {
     const { name, email, password, confirmPassword } = req.body;
 
     if (!email) {
         return res.status(422).json({ message: "O campo de email está vazio." });
     }
 
-    const existingUser = await userRepository.getUserByEmail(email);
+    const existingUser = await getUserByEmail(email);
     if (existingUser) {
         return res.status(409).json({ message: "Já existe uma conta criada neste email." });
     }
@@ -21,7 +22,4 @@ const createUser = async (req, res) => {
     } catch (error) {
         return res.status(500).json({ message: "Erro ao criar usuário." });
     }
-}
-module.exports = {
-    createUser
 }
